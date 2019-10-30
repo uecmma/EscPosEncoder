@@ -1,0 +1,30 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: npm ci
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Verify `dist/` matches HEAD's
+        run: git diff --quiet
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: npm ci
+        run: npm ci
+      - name: Test
+        run: npm run test
