@@ -29,11 +29,11 @@
   "homepage": "https://github.com/NielsLeenheer/EscPosEncoder#readme",
   "devDependencies": {
     "browserify": "^14.5.0",
+    "chai": "^4.1.2",
     "eslint": "^4.11.0",
     "eslint-config-google": "^0.9.1",
-    "uglify-es": "^3.1.10",
-    "chai": "^4.1.2",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "uglify-es": "^3.3.9"
   },
   "dependencies": {
     "buffer-to-uint8array": "^1.1.0",
