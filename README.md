@@ -6,7 +6,7 @@ Create a set of commands that can be send to any receipt printer that supports E
 
 First, install the package using npm:
 
-    npm install esc-pos-encoder --save
+    npm install uecmma/EscPosEncoder --save
 
 Then, require the package and use it like so:
 
