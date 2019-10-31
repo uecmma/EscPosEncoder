@@ -205,13 +205,13 @@ describe('EscPosEncoder', function() {
     });
   });
 
-  describe('image(canvas, 8, 8) - with a black pixel at 0,0', function() {
+  describe('image(Canvas, canvas, 8, 8) - with a black pixel at 0,0', function() {
     const canvas = new Canvas(8, 8);
     const context = canvas.getContext('2d');
     context.fillStyle = 'rgba(0, 0, 0, 1)';
     context.fillRect( 0, 0, 1, 1 );
 
-    const result = encoder.image(canvas, 8, 8).encode();
+    const result = encoder.image(Canvas, canvas, 8, 8).encode();
 
     it('should be [ 29, 118, 48, 0, 1, 0, 8, 0, 128, 0, 0, 0, 0, 0, 0, 0 ]', function() {
       assert.deepEqual(new Uint8Array([29, 118, 48, 0, 1, 0, 8, 0, 128, 0, 0, 0, 0, 0, 0, 0]), result);
