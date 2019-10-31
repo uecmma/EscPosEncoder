@@ -7,7 +7,7 @@
     "bundle": "browserify src/esc-pos-encoder.js --standalone EscPosEncoder -o dist/esc-pos-encoder.js",
     "uglify": "uglifyjs dist/esc-pos-encoder.js -cm --overwrite -o dist/esc-pos-encoder.js",
     "build": "npm run bundle && npm run uglify",
-    "lint": "eslint --fix '{src,test}/**/*.js'",
+    "lint": "eslint '{src,test}/**/*.js'",
     "mocha": "mocha test/",
     "test": "npm run lint && npm run mocha"
   },
