@@ -4,7 +4,6 @@ const {Canvas} = require('canvas');
 const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
-const should = chai.should();
 
 
 describe('EscPosEncoder', function() {
@@ -69,7 +68,7 @@ describe('EscPosEncoder', function() {
   describe('codepage(utf8).text(héllo)', function() {
     it('should throw an "Codepage not supported by printer" error', function() {
       expect(function() {
-        const result = encoder.codepage('utf8').text('héllo').encode();
+        encoder.codepage('utf8').text('héllo').encode();
       }).to.throw('Codepage not supported by printer');
     });
   });
@@ -77,7 +76,7 @@ describe('EscPosEncoder', function() {
   describe('codepage(unknown).text(héllo)', function() {
     it('should throw an "Unknown codepage" error', function() {
       expect(function() {
-        const result = encoder.codepage('unknown').text('héllo').encode();
+        encoder.codepage('unknown').text('héllo').encode();
       }).to.throw('Unknown codepage');
     });
   });
@@ -150,7 +149,22 @@ describe('EscPosEncoder', function() {
     const result = encoder.qrcode('https://nielsleenheer.com').encode();
 
     it('should be [ 10, 29, 40, 107, 4, 0, 49, 65, 50, 0, 29, 40, 107, 3, 0, ... ]', function() {
-      assert.deepEqual(new Uint8Array([10, 29, 40, 107, 4, 0, 49, 65, 50, 0, 29, 40, 107, 3, 0, 49, 67, 6, 29, 40, 107, 3, 0, 49, 69, 49, 29, 40, 107, 28, 0, 49, 80, 48, 104, 116, 116, 112, 115, 58, 47, 47, 110, 105, 101, 108, 115, 108, 101, 101, 110, 104, 101, 101, 114, 46, 99, 111, 109, 29, 40, 107, 3, 0, 49, 81, 48]), result);
+      assert.deepEqual(new Uint8Array([
+        10, 29, 40, 107, 4,
+        0, 49, 65, 50, 0,
+        29, 40, 107, 3, 0,
+        49, 67, 6, 29, 40,
+        107, 3, 0, 49, 69,
+        49, 29, 40, 107, 28,
+        0, 49, 80, 48, 104,
+        116, 116, 112, 115, 58,
+        47, 47, 110, 105, 101,
+        108, 115, 108, 101, 101,
+        110, 104, 101, 101, 114,
+        46, 99, 111, 109, 29,
+        40, 107, 3, 0, 49,
+        81, 48,
+      ]), result);
     });
   });
 
@@ -158,7 +172,22 @@ describe('EscPosEncoder', function() {
     const result = encoder.qrcode('https://nielsleenheer.com', 1, 8, 'h').encode();
 
     it('should be [ 10, 29, 40, 107, 4, 0, 49, 65, 49, 0, 29, 40, 107, 3, 0, ... ]', function() {
-      assert.deepEqual(new Uint8Array([10, 29, 40, 107, 4, 0, 49, 65, 49, 0, 29, 40, 107, 3, 0, 49, 67, 8, 29, 40, 107, 3, 0, 49, 69, 51, 29, 40, 107, 28, 0, 49, 80, 48, 104, 116, 116, 112, 115, 58, 47, 47, 110, 105, 101, 108, 115, 108, 101, 101, 110, 104, 101, 101, 114, 46, 99, 111, 109, 29, 40, 107, 3, 0, 49, 81, 48]), result);
+      assert.deepEqual(new Uint8Array([
+        10, 29, 40, 107, 4,
+        0, 49, 65, 49, 0,
+        29, 40, 107, 3, 0,
+        49, 67, 8, 29, 40,
+        107, 3, 0, 49, 69,
+        51, 29, 40, 107, 28,
+        0, 49, 80, 48, 104,
+        116, 116, 112, 115, 58,
+        47, 47, 110, 105, 101,
+        108, 115, 108, 101, 101,
+        110, 104, 101, 101, 114,
+        46, 99, 111, 109, 29,
+        40, 107, 3, 0, 49,
+        81, 48,
+      ]), result);
     });
   });
 
@@ -166,7 +195,13 @@ describe('EscPosEncoder', function() {
     const result = encoder.barcode('3130630574613', 'ean13', 60).encode();
 
     it('should be [ 29, 104, 60, 29, 119, 3, 29, 107, 2, ... ]', function() {
-      assert.deepEqual(new Uint8Array([29, 104, 60, 29, 119, 3, 29, 107, 2, 51, 49, 51, 48, 54, 51, 48, 53, 55, 52, 54, 49, 51, 0]), result);
+      assert.deepEqual(new Uint8Array([
+        29, 104, 60, 29, 119,
+        3, 29, 107, 2, 51,
+        49, 51, 48, 54, 51,
+        48, 53, 55, 52, 54,
+        49, 51, 0,
+      ]), result);
     });
   });
 
@@ -187,7 +222,7 @@ describe('EscPosEncoder', function() {
     const result = encoder.cut().encode();
 
     it('should be [ 27, 86, 00 ]', function() {
-      assert.deepEqual(new Uint8Array([27, 86, 00]), result);
+      assert.deepEqual(new Uint8Array([27, 86, 0]), result);
     });
   });
 
@@ -195,7 +230,7 @@ describe('EscPosEncoder', function() {
     const result = encoder.cut('full').encode();
 
     it('should be [ 27, 86, 00 ]', function() {
-      assert.deepEqual(new Uint8Array([27, 86, 00]), result);
+      assert.deepEqual(new Uint8Array([27, 86, 0]), result);
     });
   });
 
@@ -203,7 +238,7 @@ describe('EscPosEncoder', function() {
     const result = encoder.cut('partial').encode();
 
     it('should be [ 27, 86, 01 ]', function() {
-      assert.deepEqual(new Uint8Array([27, 86, 01]), result);
+      assert.deepEqual(new Uint8Array([27, 86, 1]), result);
     });
   });
 
