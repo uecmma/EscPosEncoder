@@ -1,6 +1,5 @@
 const iconv = require('iconv-lite');
 const linewrap = require('linewrap');
-const {Canvas} = require('canvas');
 const Dither = require('canvas-dither');
 const Flatten = require('canvas-flatten');
 
@@ -440,6 +439,7 @@ class EscPosEncoder {
   /**
      * Image
      *
+     * @param  {object}         Canvas  `Canvas` class object
      * @param  {object}         element  an element, like a canvas or image that needs to be printed
      * @param  {number}         width  width of the image on the printer
      * @param  {number}         height  height of the image on the printer
@@ -448,7 +448,7 @@ class EscPosEncoder {
      * @return {object}                  Return the object, for easy chaining commands
      *
      */
-  image(element, width, height, algorithm, threshold) {
+  image(Canvas, element, width, height, algorithm, threshold) {
     if (width % 8 !== 0) {
       throw new Error('Width must be a multiple of 8');
     }
@@ -579,4 +579,6 @@ class EscPosEncoder {
   }
 }
 
+exports.EscPosEncoder = EscPosEncoder;
+exports.Canvas = EscPosEncoder;
 module.exports = EscPosEncoder;
