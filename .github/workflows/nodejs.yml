@@ -10,7 +10,15 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+
+      - uses: actions/cache@preview
+        id: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
       - name: npm ci
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build
         run: npm run build
@@ -24,7 +32,15 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+
+      - uses: actions/cache@preview
+        id: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
       - name: npm ci
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Test
         run: npm run test
