@@ -73,11 +73,11 @@ class EscPosEncoder {
    * Select charcode
    *
    * @param {string} value
-   * @returns {object}
+   * @return {object}
    */
   charcode(value) {
     const charcode = {
-      //Char code table
+      // Char code table
       'PC437': [0x1b, 0x74, 0x00], // USA: Standard Europe
       'JIS': [0x1b, 0x74, 0x01], // Japanese Katakana
       'PC850': [0x1b, 0x74, 0x02], // Multilingual
@@ -101,7 +101,7 @@ class EscPosEncoder {
     };
 
     this._queue(
-      charcode[value.toUpperCase()]
+        charcode[value.toUpperCase()]
     );
 
     return this;
@@ -111,10 +111,10 @@ class EscPosEncoder {
    * Select kanji code system
    *
    * @param {string} value `jis` | `sjis`
-   * @returns {object}
+   * @return {object}
    */
-  kanji_code_system(value) {
-    let data = [0x1c, 0x43];
+  kanjiCodeSystem(value) {
+    const data = [0x1c, 0x43];
 
     switch (value) {
       case 'jis':
@@ -137,9 +137,9 @@ class EscPosEncoder {
    * Toggle kanji mode
    *
    * @param {bool} value on or off
-   * @returns {object}
+   * @return {object}
    */
-  kanji_mode(value) {
+  kanjiMode(value) {
     if (value) {
       this._queue([0x1c, 0x26]);
     } else {
@@ -153,7 +153,7 @@ class EscPosEncoder {
    * Write japanese text
    *
    * @param {string} value
-   * @returns {object}
+   * @return {object}
    */
   jtext(value) {
     if (!this._kanji_code_system) {
@@ -161,7 +161,7 @@ class EscPosEncoder {
     }
 
     const bytes = EncodingJapanese.convert(
-      EncodingJapanese.stringToCode(value), this._kanji_code_system
+        EncodingJapanese.stringToCode(value), this._kanji_code_system
     );
 
     this._queue(bytes);
@@ -613,18 +613,17 @@ class EscPosEncoder {
   /**
      * Cut paper
      *
-     * @param  {bool}          feed
-     * @param  {bool}          partial
+     * @param  {number}          option
      * @return {object}                  Return the object, for easy chaining commands
      *
      */
-  cut(feed = true, partial = false) {
-    let data = [0x1d, 0x56];
+  cut(option = {feed: true, partial: false}) {
+    const data = [0x1d, 0x56];
 
-    if (feed) {
+    if (option.feed) {
       data.push(0x41);
     }
-    data.push(partial);
+    data.push(option.partial);
 
     this._queue(Uint8Array.from(data));
 
