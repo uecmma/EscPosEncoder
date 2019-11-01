@@ -511,20 +511,20 @@ class EscPosEncoder {
   /**
      * Cut paper
      *
-     * @param  {string}          value   full or partial. When not specified a full cut will be assumed
+     * @param  {bool}          feed
+     * @param  {bool}          partial
      * @return {object}                  Return the object, for easy chaining commands
      *
      */
-  cut(value) {
-    let data = 0x00;
+  cut(feed = true, partial = false) {
+    let data = [0x1d, 0x56];
 
-    if (value == 'partial') {
-      data = 0x01;
+    if (feed) {
+      data.push(0x41);
     }
+    data.push(partial);
 
-    this._queue([
-      0x1b, 0x56, data,
-    ]);
+    this._queue(Uint8Array.from(data));
 
     return this;
   }
