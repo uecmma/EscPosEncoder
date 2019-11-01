@@ -66,6 +66,22 @@ An optional parameter turns on word wrapping. To enable this, specify the maximu
         .text('The quick brown fox jumps over the lazy dog', 20)
         .encode()
 
+### Kanji
+
+Print a string of japanese text.
+
+```js
+let result = encoder
+    .initialize()
+    .charcode('jis')                            // select charcode. if japanese, `jis`.
+    .kanji_code_system('sjis')                  // select japanese kanji code system. jis | sjis
+    .kanji_mode(true)                           // turn on kanji mode.
+    .jtext('ああ＾こころがぴょんぴょんするんじゃぁ＾') // write japanese text with selected kanji system code.
+    .kanji_mode(false)                          // turn off kanji mode
+    .newline()
+    .encode()
+```
+
 ### Newline
 
 Move to the beginning of the next line.
@@ -243,10 +259,10 @@ The sixth paramter is the threshold that will be used by the threshold and bayer
 
 ### Cut
 
-Cut the paper. Optionally a parameter can be specified which can be either be "partial" or "full". If not specified, a full cut will be used. 
+Cut the paper. Optionally first parameter `feed` can be specified whether to feed paper before cut or not, second parameter `partial` can be specified how to cut, partially or fully. If not specified, paper will feed and a full cut will be used. 
 
     let result = encoder
-        .cut('partial')
+        .cut(feed = true, partial = false)
         .encode()
 
 Note: Not all printer models support cutting paper. And even if they do, they might not support both types of cuts.

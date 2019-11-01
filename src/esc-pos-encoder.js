@@ -2,6 +2,7 @@ const iconv = require('iconv-lite');
 const linewrap = require('linewrap');
 const Dither = require('canvas-dither');
 const Flatten = require('canvas-flatten');
+const EncodingJapanese = require('encoding-japanese');
 
 
 /**
@@ -23,6 +24,7 @@ class EscPosEncoder {
   _reset() {
     this._buffer = [];
     this._codepage = 'ascii';
+    this._kanji_code_system = undefined;
 
     this._state = {
       'bold': false,
@@ -63,6 +65,106 @@ class EscPosEncoder {
     this._queue([
       0x1b, 0x40,
     ]);
+
+    return this;
+  }
+
+  /**
+   * Select charcode
+   *
+   * @param {string} value
+   * @returns {object}
+   */
+  charcode(value) {
+    const charcode = {
+      //Char code table
+      'PC437': [0x1b, 0x74, 0x00], // USA: Standard Europe
+      'JIS': [0x1b, 0x74, 0x01], // Japanese Katakana
+      'PC850': [0x1b, 0x74, 0x02], // Multilingual
+      'PC860': [0x1b, 0x74, 0x03], // Portuguese
+      'PC863': [0x1b, 0x74, 0x04], // Canadian-French
+      'PC865': [0x1b, 0x74, 0x05], // Nordic
+      'WEU': [0x1b, 0x74, 0x06], // Simplified Kanji, Hirakana
+      'GREEK': [0x1b, 0x74, 0x07], // Simplified Kanji
+      'HEBREW': [0x1b, 0x74, 0x08], // Simplified Kanji
+      'PC1252': [0x1b, 0x74, 0x11], // Western European Windows Code Set
+      'PC866': [0x1b, 0x74, 0x12], // Cirillic //2
+      'PC852': [0x1b, 0x74, 0x13], // Latin 2
+      'PC858': [0x1b, 0x74, 0x14], // Euro
+      'THAI42': [0x1b, 0x74, 0x15], // Thai character code 42
+      'THAI11': [0x1b, 0x74, 0x16], // Thai character code 11
+      'THAI13': [0x1b, 0x74, 0x17], // Thai character code 13
+      'THAI14': [0x1b, 0x74, 0x18], // Thai character code 14
+      'THAI16': [0x1b, 0x74, 0x19], // Thai character code 16
+      'THAI17': [0x1b, 0x74, 0x1a], // Thai character code 17
+      'THAI18': [0x1b, 0x74, 0x1b], // Thai character code 18
+    };
+
+    this._queue(
+      charcode[value.toUpperCase()]
+    );
+
+    return this;
+  }
+
+  /**
+   * Select kanji code system
+   *
+   * @param {string} value `jis` | `sjis`
+   * @returns {object}
+   */
+  kanji_code_system(value) {
+    let data = [0x1c, 0x43];
+
+    switch (value) {
+      case 'jis':
+        data.push(0x00);
+        break;
+      case 'sjis':
+        data.push(0x01);
+        break;
+      default:
+        throw new Error('unsupported kanji code system.');
+    }
+    this._kanji_code_system = value;
+
+    this._queue(data);
+
+    return this;
+  }
+
+  /**
+   * Toggle kanji mode
+   *
+   * @param {bool} value on or off
+   * @returns {object}
+   */
+  kanji_mode(value) {
+    if (value) {
+      this._queue([0x1c, 0x26]);
+    } else {
+      this._queue([0x1c, 0x2e]);
+    }
+
+    return this;
+  }
+
+  /**
+   * Write japanese text
+   *
+   * @param {string} value
+   * @returns {object}
+   */
+  jtext(value) {
+    if (!this._kanji_code_system) {
+      throw new Error('kanji code system is not selected.');
+    }
+
+    const bytes = EncodingJapanese.convert(
+      EncodingJapanese.stringToCode(value), this._kanji_code_system
+    );
+
+    this._queue(bytes);
 
     return this;
   }
