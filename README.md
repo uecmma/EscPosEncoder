@@ -77,7 +77,7 @@ let result = encoder
     .initialize()
     .charcode('jis')                            // select charcode. if japanese, `jis`.
     .kanjiCodeSystem('sjis')                  // select japanese kanji code system. jis | sjis
-    .kanji_mode(true)                           // turn on kanji mode.
+    .kanjiMode(true)                           // turn on kanji mode.
     .jtext('ああ＾こころがぴょんぴょんするんじゃぁ＾') // write japanese text with selected kanji system code.
     .kanjiMode(false)                          // turn off kanji mode
     .newline()
