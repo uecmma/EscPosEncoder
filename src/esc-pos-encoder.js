@@ -613,7 +613,7 @@ class EscPosEncoder {
   /**
      * Cut paper
      *
-     * @param  {number}          option
+     * @param  {object}          option
      * @return {object}                  Return the object, for easy chaining commands
      *
      */
