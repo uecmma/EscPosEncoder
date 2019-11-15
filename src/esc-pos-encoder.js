@@ -150,6 +150,28 @@ class EscPosEncoder {
   }
 
   /**
+   *
+   *
+   * @param {string} string source string
+   * @param {object} table translation table
+   * @return {string} string
+   * @memberof EscPosEncoder
+   */
+  _translateString(string, table = {}) {
+    let ret = '';
+    let begin = 0;
+    for (let i = 0, len = string.length; i < len; i++) {
+      const c = string[i];
+      if (c in table) {
+        ret += string.substr(begin, i - begin) + table[c];
+        begin = i + 1;
+      }
+    }
+    ret += string.substr(begin);
+    return ret;
+  }
+
+  /**
    * Write japanese text
    *
    * @param {string} value
@@ -160,11 +182,17 @@ class EscPosEncoder {
       throw new Error('kanji code system is not selected.');
     }
 
+    value = this._translateString(value, {
+      '〜': '～',
+    });
+
     const bytes = EncodingJapanese.convert(
         EncodingJapanese.stringToCode(value), this._kanji_code_system
     );
 
+    this.kanjiMode(true);
     this._queue(bytes);
+    this.kanjiMode(false);
 
     return this;
   }
@@ -365,19 +393,16 @@ class EscPosEncoder {
   /**
      * Change text size
      *
-     * @param  {string}          value   small or normal
-     * @return {object}                  Return the object, for easy chaining commands
+     * @param  {number}          w   width scale
+     * @param  {number}          h   height scale
+     * @return {object}
      *
      */
-  size(value) {
-    if (value === 'small') {
-      value = 0x01;
-    } else {
-      value = 0x00;
-    }
+  size(w = 1, h = 1) {
+    const value = ((w - 1) << 4) + (h - 1);
 
     this._queue([
-      0x1b, 0x4d, value,
+      0x1b, 0x21, value,
     ]);
 
     return this;
