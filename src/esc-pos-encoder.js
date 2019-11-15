@@ -638,7 +638,7 @@ class EscPosEncoder {
   /**
      * Cut paper
      *
-     * @param  {number}          option
+     * @param  {object}          option
      * @return {object}                  Return the object, for easy chaining commands
      *
      */
@@ -648,9 +648,9 @@ class EscPosEncoder {
     if (option.feed) {
       data.push(0x41);
     }
-    data.push(option.partial);
+    data.push(+option.partial);
 
-    this._queue(Uint8Array.from(data));
+    this._queue(data);
 
     return this;
   }
