@@ -40,6 +40,7 @@
     "buffer-to-uint8array": "^1.1.0",
     "canvas-dither": "^1.0.0",
     "canvas-flatten": "^1.0.0",
+    "encoding-japanese": "^1.0.30",
     "iconv-lite": "^0.4.19",
     "linewrap": "^0.2.1"
   }

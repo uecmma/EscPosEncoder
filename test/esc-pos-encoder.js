@@ -221,24 +221,24 @@ describe('EscPosEncoder', function() {
   describe('cut()', function() {
     const result = encoder.cut().encode();
 
-    it('should be [ 27, 86, 00 ]', function() {
-      assert.deepEqual(new Uint8Array([27, 86, 0]), result);
+    it('should be [ 29, 86, 65, 00 ]', function() {
+      assert.deepEqual(new Uint8Array([29, 86, 65, 0]), result);
     });
   });
 
-  describe('cut(full)', function() {
-    const result = encoder.cut('full').encode();
+  describe('cut(feed|partial)', function() {
+    const result = encoder.cut({feed: true, partial: true}).encode();
 
-    it('should be [ 27, 86, 00 ]', function() {
-      assert.deepEqual(new Uint8Array([27, 86, 0]), result);
+    it('should be [ 29, 86, 65, 01 ]', function() {
+      assert.deepEqual(new Uint8Array([29, 86, 65, 1]), result);
     });
   });
 
   describe('cut(partial)', function() {
-    const result = encoder.cut('partial').encode();
+    const result = encoder.cut({partial: true}).encode();
 
-    it('should be [ 27, 86, 01 ]', function() {
-      assert.deepEqual(new Uint8Array([27, 86, 1]), result);
+    it('should be [ 29, 86, 01 ]', function() {
+      assert.deepEqual(new Uint8Array([29, 86, 1]), result);
     });
   });
 
