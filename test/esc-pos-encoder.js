@@ -145,6 +145,14 @@ describe('EscPosEncoder', function() {
     });
   });
 
+  describe('size(2,2)', function() {
+    const result = encoder.size(2, 2).encode();
+
+    it('should be [ 0x1b, 0x21, 0x17 ]', function() {
+      assert.deepEqual(new Uint8Array([0x1b, 0x21, 17]), result);
+    });
+  });
+
   describe('qrcode(https://nielsleenheer.com)', function() {
     const result = encoder.qrcode('https://nielsleenheer.com').encode();
 
